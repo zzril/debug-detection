@@ -31,9 +31,16 @@ extern int main();
 
 /**
  * Executed before `main()`, checks for presence of a debugger.
- * If no debugger is found, prints `Ich tue boeses!\n`.
+ * If no debugger is found, executes the "bad functionality".
  */
 static __attribute__ ((constructor)) void pre();
+
+/**
+ * Executes the "bad functionality".
+ * (In this dummy example, that is just printing a string.)
+ * Called when the absence of a debugger was confirmed.
+ */
+static void execute_bad_functionality();
 
 /**
  * Returns nonzero iff the `_` environment variable ends with "/gdb".
@@ -62,8 +69,13 @@ static int is_debugged();
 
 static __attribute__ ((constructor)) void pre() {
 	if(!is_debugged()) {
-		printf("Executing bad functionality...\n");
+		execute_bad_functionality();
 	}
+	return;
+}
+
+static void execute_bad_functionality() {
+	printf("Executing bad functionality...\n");
 	return;
 }
 
